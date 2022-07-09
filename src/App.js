@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
     return (
         <div>
         <p>Hellooo</p> 
-        {/* <button title="clickme" onClick={clicked}/> */}
+        <button title="clickme" onClick={clicked}/>
         </div>
     )
 }
