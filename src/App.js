@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
+import  { Login } from './components/Login'
 
  function App(props) {
 
     return (
-        <div>
-        <p>Hellooo</p> 
-        <button title="clickme" onClick={clicked}/>
-        </div>
+        <Login/> 
     )
 }
 export default App
