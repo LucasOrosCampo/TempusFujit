@@ -1,0 +1,18 @@
+
+#loginForm{
+    display: grid,
+
+};
+
+#usernameField{
+    grid-row:1;
+    visibility:hidden;
+}
+
+#passwordField{
+    grid-row:2;
+};
+
+#loginButton{
+    grid-row:3,
+}
