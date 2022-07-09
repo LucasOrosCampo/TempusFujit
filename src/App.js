@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const App = () => {
+ function App(props) {
+
+    useEffect(()=> {console.log("hola")});
+    const clicked = ( )=> {
+        console.log("hola");
+    }
     return (
-        <h1> 
-            wellcome to my page
-        </h1>
+        <div>
+        <p>Hellooo</p> 
+        {/* <button title="clickme" onClick={clicked}/> */}
+        </div>
     )
 }
-
 export default App
