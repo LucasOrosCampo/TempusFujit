@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+             xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
+             xmlns:local ="clr-namespace:TempusFujit"
+             xmlns:model ="clr-namespace:TempusFujit.Models"
+             x:Class="TempusFujit.ClientPage"
+             x:Name="__clientPage__"
+             >
+    <ContentPage.BindingContext>
+        <vm:ClientPageViewModel/>
+    </ContentPage.BindingContext>
+    <VerticalStackLayout>
+        <Button Clicked="OnBack"
+                x:Name="GoBack"
+                Text="Atras"
+                HorizontalOptions="End"
+                Margin="0,10,10,0"
+                CornerRadius="10" 
+        />
+        <HorizontalStackLayout
+            HorizontalOptions="CenterAndExpand"
+            Spacing="10"
+            >
+            <VerticalStackLayout Spacing="10" HorizontalOptions="StartAndExpand">
+                <Label>
+                    Inicio
+                </Label>
+                <DatePicker
+                    HorizontalOptions="StartAndExpand"
+                WidthRequest="150"
+                Date="{Binding NewStartingDate}"
+                Format="dd-MMM HH:mm"
+                MinimumDate="{Binding  MinDate}"
+                MaximumDate="{Binding  MaxDate}"
+                />
+                <TimePicker
+                    HorizontalOptions="StartAndExpand"
+                    />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="10">
+                <Label>
+                    Final
+                </Label>
+                <DatePicker
+                WidthRequest="150"
+                Date="{Binding NewEndingDate}"
+                MinimumDate="{Binding MinEndingDate}"
+                MaximumDate="{Binding  MaxDate}"
+                Format="dd-MMM HH:mm"
+                HorizontalOptions="StartAndExpand"
+                />
+                <TimePicker
+                    HorizontalOptions="StartAndExpand"
+                    /> 
+                
+            </VerticalStackLayout>
+            
+
+            <Button
+                HeightRequest="20"
+                x:Name ="AddButton"
+                Text="Añadir"
+                Command="{Binding CreateTimeEntry}"
+                />
+
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand">
+            <Label TextType="Html">
+                <![CDATA[<strong>Inicio</strong>]]>
+            </Label>
+            <Label TextType="Html">
+                <![CDATA[<strong>Final
+                </strong>]]>
+            </Label>
+        </HorizontalStackLayout>
+        <CollectionView ItemsSource="{Binding CurrentlyDisplayedTimeEntries}" Grid.Row = "5" HorizontalOptions="CenterAndExpand" >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout x:DataType="model:TimeEntry" Spacing="20" HorizontalOptions="CenterAndExpand">
+                            <Label Text="{Binding StartingTime}"></Label>
+                            <BoxView HeightRequest="2" BackgroundColor="Black" Margin="0,10,0,10" />
+                            <Label Text="{Binding EndingTime}"></Label>
+                        </HorizontalStackLayout>
+                        <BoxView HeightRequest="1" BackgroundColor="Black" Margin="10,0" />
+                    </VerticalStackLayout>
+                    
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

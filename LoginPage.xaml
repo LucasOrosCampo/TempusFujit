@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+             x:Class="TempusFujit.LoginPage">
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Entry
+                Placeholder ="Contraseña"
+                WidthRequest="200"
+                IsPassword="True"
+                x:Name="passwordEntry"
+                Completed="OnLogInClicked"
+            />
+            <Button
+                x:Name="AccessBtn"
+                Text="Acceder"
+                TextColor="DarkGrey"
+                Clicked="OnLogInClicked"
+                HorizontalOptions="Center"
+                BackgroundColor="AliceBlue"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

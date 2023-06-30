@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:TempusFujit.Models"
+             xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
+             xmlns:local="clr-namespace:TempusFujit"
+             x:Class="TempusFujit.MainPage"
+             x:Name="__MainPage__"
+>
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel/>
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="0.6*,*,0.8*,0.8*,6*">
+        <ImageButton 
+            x:Name="GoBack"
+            Clicked="OnGoBackClicked"
+            HorizontalOptions="End"
+            Margin="0,10,10,0"
+            Aspect="Center"
+            Source="back.png"
+            CornerRadius="10"
+        />
+        
+        <HorizontalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="CenterAndExpand"
+            Spacing="10">
+
+            <VerticalStackLayout>
+                <Label Text="Nombre:" ></Label>
+                <Entry
+                WidthRequest="200"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Text ="{Binding NewClientName}"
+                />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout>
+                <Label Text="Descripcion:" ></Label>
+                <Entry
+                WidthRequest="200"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Text="{Binding NewClientDescription}"
+            />
+                
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text=" " ></Label>
+                <ImageButton
+                    Aspect="Center"
+                    CornerRadius="8"
+                    Source ="add_user.png"
+                    BackgroundColor="AliceBlue"
+                    HeightRequest="20"
+                    Command="{Binding AddClientCmd}"
+                />
+            </VerticalStackLayout>  
+        </HorizontalStackLayout>
+        
+        <SearchBar Grid.Row="2" WidthRequest="600" Text="{Binding SearchedTerm}">
+            
+        </SearchBar>
+        
+        <Grid Grid.Row="3" ColumnDefinitions="*,3*,*" Margin="{StaticResource GridMargin}">
+            <Label TextType="Html" Grid.Column="0">
+                <![CDATA[<strong>NOMBRE</strong>]]>
+            </Label>
+            <Label TextType="Html" Grid.Column="1">
+                <![CDATA[<strong>DESCRIPCION</strong>]]>
+            </Label>
+            <Label TextType="Html" Grid.Column="2">
+                <![CDATA[<strong>ACCIONES</strong>]]>
+            </Label>
+        </Grid>
+        <CollectionView Grid.Row="4" x:DataType="vm:MainPageViewModel" ItemsSource="{Binding DisplayedClients}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate >
+                    <Grid x:DataType="model:Client" ColumnDefinitions="*,3*,1*" Margin="{StaticResource GridMargin}" >
+                        <Label 
+                            Grid.Column="0"
+                            Text="{Binding Name}"
+                            
+                        >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="GoToClientFromLabel" CommandParameter="{Binding Id}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label 
+                            Grid.Column="1"
+                            Text="{Binding Description}"
+                        />
+                        <Button
+                            x:DataType="model:Client" Grid.Column="2"
+                            CornerRadius="8"
+                            Text="Borrar"
+                            HeightRequest="10"
+                            Margin="0,2,0,0"
+                            Command="{Binding Source={x:Reference __MainPage__}, Path=BindingContext.RemoveClientCmd}"
+                            CommandParameter="{Binding Id}"
+                        />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
