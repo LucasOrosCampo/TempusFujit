@@ -10,11 +10,4 @@ public partial class ClientPage : ContentPage
 	{
         InitializeComponent();
     }
-
-	private void OnBack(object sender, EventArgs e)
-	{
-        Shell.Current.GoToAsync("//mainPage");
-    }
-
-
 }
