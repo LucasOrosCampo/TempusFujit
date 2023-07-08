@@ -59,27 +59,31 @@
             </VerticalStackLayout>  
         </HorizontalStackLayout>
 
-        <SearchBar Grid.Row="2" WidthRequest="450" HeightRequest="10" Margin="0 0 0 0"  Text="{Binding SearchedTerm}"/>
+        <SearchBar Grid.Row="2" WidthRequest="450" HeightRequest="10" Margin="0, 0, 0, 0"  Text="{Binding SearchedTerm}"/>
 
         <Grid Grid.Row="3" ColumnDefinitions="*,3*,*" Margin="{StaticResource GridMargin}">
-            <Label TextType="Html" Grid.Column="0">
+            <Label TextType="Html" Grid.Column="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
                 <![CDATA[<strong>NOMBRE</strong>]]>
             </Label>
-            <Label TextType="Html" Grid.Column="1">
+            <Label TextType="Html" Grid.Column="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Padding="2, 0, 0, 0">
                 <![CDATA[<strong>DESCRIPCION</strong>]]>
             </Label>
-            <Label TextType="Html" Grid.Column="2">
+            <Label TextType="Html" Grid.Column="2" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
                 <![CDATA[<strong>ACCIONES</strong>]]>
             </Label>
         </Grid>
-        <CollectionView Grid.Row="4" x:DataType="vm:MainPageViewModel" ItemsSource="{Binding DisplayedClients}">
+        <CollectionView Grid.Row="4" x:DataType="vm:MainPageViewModel" ItemsSource="{Binding DisplayedClients}" x:Name="clientsCollection" >
             <CollectionView.ItemTemplate>
                 <DataTemplate >
-                    <Grid x:DataType="model:Client" ColumnDefinitions="*,3*,1*" Margin="{StaticResource GridMargin}" >
+                    <Grid x:DataType="model:Client" ColumnDefinitions="*,3*,1*" Margin="{StaticResource GridMargin}">
                         <Label 
                             Grid.Column="0"
                             Text="{Binding Name}"
-                            
+                            FontFamily="YsabeauOfficeBlack"
+                            FontSize="Small"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            Padding="2, 0, 0, 0"
                         >
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="GoToClientFromLabel" CommandParameter="{Binding Id}"/>
@@ -88,13 +92,17 @@
                         <Label 
                             Grid.Column="1"
                             Text="{Binding Description}"
+                            VerticalTextAlignment="Center"
+                            Padding="5, 0, 0, 0"
                         />
-                        <Button
-                            x:DataType="model:Client" Grid.Column="2"
-                            CornerRadius="8"
-                            Text="Borrar"
-                            HeightRequest="10"
-                            Margin="0,2,0,0"
+                        <ImageButton
+                            Grid.Column="2"
+                            Margin="0, 2, 0, 2"
+                            Aspect="AspectFill"
+                            BackgroundColor="Transparent"
+                            HeightRequest="5"
+                            WidthRequest="5"
+                            Source ="can_trash.png"
                             Command="{Binding Source={x:Reference __MainPage__}, Path=BindingContext.RemoveClientCmd}"
                             CommandParameter="{Binding Id}"
                         />

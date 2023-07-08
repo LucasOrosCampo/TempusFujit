@@ -52,6 +52,7 @@
 	  <None Remove="Resources\Images\add_user.svg" />
 	  <None Remove="Resources\Images\back.png" />
 	  <None Remove="Resources\Images\rotated_cross.png" />
+	  <None Remove="Resources\Images\can_trash.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
