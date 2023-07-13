@@ -102,6 +102,7 @@ namespace TempusFujit.ViewModels
                 CreationDate = DateTime.UtcNow
             };
             db.TimeEntries.Add(newTimeEntry);
+            db.SaveChanges();   
             displayTimeOfClient(this.ClientId);
         }
     }
