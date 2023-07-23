@@ -11,8 +11,9 @@
     <ContentPage.BindingContext>
         <vm:ClientPageViewModel/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
+    <Grid RowDefinitions="2*, 0.8*, 7*" Margin="0, 10, 0, 0">
         <HorizontalStackLayout
+            Grid.Row="0"
             HorizontalOptions="CenterAndExpand"
             Spacing="10"
             >
@@ -59,29 +60,39 @@
                 />
 
         </HorizontalStackLayout>
-        <HorizontalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand">
-            <Label TextType="Html">
+        <Grid Grid.Row="1" ColumnDefinitions="*, 2*, *" HorizontalOptions="CenterAndExpand" ColumnSpacing="80" Margin="0, 0, 70, 0">
+            <Label TextType="Html" Grid.Column="0">
                 <![CDATA[<strong>Inicio</strong>]]>
             </Label>
-            <Label TextType="Html">
+            <Label TextType="Html" Grid.Column="2">
                 <![CDATA[<strong>Final
                 </strong>]]>
             </Label>
-        </HorizontalStackLayout>
-        <CollectionView ItemsSource="{Binding CurrentlyDisplayedTimeEntries}" Grid.Row = "5" HorizontalOptions="CenterAndExpand" >
+        </Grid>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding CurrentlyDisplayedTimeEntries}" HorizontalOptions="CenterAndExpand" Margin="0, 0, 50, 0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <VerticalStackLayout>
-                        <HorizontalStackLayout x:DataType="model:TimeEntry" Spacing="20" HorizontalOptions="CenterAndExpand">
-                            <Label Text="{Binding StartingTime}"></Label>
-                            <BoxView HeightRequest="2" BackgroundColor="Black" Margin="0,10,0,10" />
-                            <Label Text="{Binding EndingTime}"></Label>
-                        </HorizontalStackLayout>
-                        <BoxView HeightRequest="1" BackgroundColor="Black" Margin="10,0" />
-                    </VerticalStackLayout>
-                    
+                    <Grid x:DataType="model:TimeEntry"  ColumnDefinitions="2*, 2*, *" ColumnSpacing="20" Padding="0, 0, 20, 0" >
+                        <Grid.GestureRecognizers>
+                            <PointerGestureRecognizer PointerEntered="ShowTrashIcon" PointerExited="HideTrashIcon"/>
+                        </Grid.GestureRecognizers>
+                        <Label Text="{Binding StartingTime}" Grid.Column="0"/>
+                        <Label Text="{Binding EndingTime}" Grid.Column="1"/>
+                        <ImageButton
+                        IsVisible="false"
+                        Grid.Column="2"
+                        Margin="0, 2, 0, 2"
+                        Aspect="AspectFill"
+                        BackgroundColor="Transparent"
+                        HeightRequest="5"
+                        WidthRequest="5"
+                        Source ="can_trash.png"
+                        Command="{Binding Source={x:Reference __clientPage__}, Path=BindingContext.RemoveTimeEntry}"
+                        CommandParameter="{Binding Id}"
+                    />
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

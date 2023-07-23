@@ -70,12 +70,14 @@ namespace TempusFujit.ViewModels
 
         public ICommand DisplayTimeOfClient { get; set; }
         public ICommand CreateTimeEntry { get; set; }
+        public ICommand RemoveTimeEntry { get; set; }
 
         public ClientPageViewModel()
         {
             CurrentlyDisplayedTimeEntries = new List<TimeEntry>();
             DisplayTimeOfClient = new Command<int>(execute: id => displayTimeOfClient(id));
             CreateTimeEntry = new Command(execute:() => createTimeEntry());
+            RemoveTimeEntry = new Command<int>(execute:id => removeTimeEntry(id));
             MinDate = DateTime.UtcNow.AddMonths(-1);
             MaxDate = DateTime.UtcNow.AddMonths(1);
         }
@@ -96,14 +98,23 @@ namespace TempusFujit.ViewModels
             using var db = dbFactory.CreateDbContext();
             var newTimeEntry = new TimeEntry
             {
-                ClientId = this.ClientId,
+                ClientId = ClientId,
                 StartingTime = NewStartingDate,
                 EndingTime = NewEndingDate,
                 CreationDate = DateTime.UtcNow
             };
             db.TimeEntries.Add(newTimeEntry);
             db.SaveChanges();   
-            displayTimeOfClient(this.ClientId);
+            displayTimeOfClient(ClientId);
+        }
+
+        private void removeTimeEntry(int id)
+        {
+            using var db = dbFactory.CreateDbContext();
+            var te = db.TimeEntries.Single(x => x.Id == id);
+            db.Remove(te);
+            db.SaveChanges();
+            displayTimeOfClient(ClientId);
         }
     }
 }

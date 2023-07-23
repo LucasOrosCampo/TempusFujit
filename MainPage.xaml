@@ -4,6 +4,7 @@
              xmlns:model ="clr-namespace:TempusFujit.Models"
              xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
              xmlns:local="clr-namespace:TempusFujit"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="TempusFujit.MainPage"
              x:Name="__MainPage__"
 >
@@ -20,12 +21,11 @@
             Source="back.png"
             CornerRadius="10"
         />
-        
+
         <HorizontalStackLayout
             Grid.Row="1"
             HorizontalOptions="CenterAndExpand"
             Spacing="10">
-
             <VerticalStackLayout>
                 <Label Text="Nombre:" ></Label>
                 <Entry
@@ -33,18 +33,30 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Text ="{Binding NewClientName}"
-                />
+                >
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="Completed"
+                            Command="{Binding AddClientCmd}" 
+                        />     
+                    </Entry.Behaviors>
+                </Entry>
             </VerticalStackLayout>
 
             <VerticalStackLayout>
                 <Label Text="Descripcion:" ></Label>
-                <Entry
+                <Entry 
                 WidthRequest="200"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Text="{Binding NewClientDescription}"
-            />
-                
+                Text="{Binding NewClientDescription}">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="Completed"
+                            Command="{Binding AddClientCmd}" 
+                        />      
+                    </Entry.Behaviors>
+                </Entry>
             </VerticalStackLayout>
             <VerticalStackLayout>
                 <Label Text=" " ></Label>

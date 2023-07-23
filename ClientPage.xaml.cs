@@ -10,4 +10,15 @@ public partial class ClientPage : ContentPage
 	{
         InitializeComponent();
     }
+
+    void ShowTrashIcon(object sender, PointerEventArgs args)
+    {
+        var btn = (ImageButton)((Grid)sender).Children[2];
+        btn.IsVisible = true;
+    }
+    void HideTrashIcon(object sender, PointerEventArgs args)
+    {
+        var btn = (ImageButton)((Grid)sender).Children[2];
+        btn.IsVisible = false;
+    }
 }
