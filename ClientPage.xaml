@@ -5,6 +5,7 @@
              xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
              xmlns:local ="clr-namespace:TempusFujit"
              xmlns:model ="clr-namespace:TempusFujit.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="TempusFujit.ClientPage"
              x:Name="__clientPage__"
              >
@@ -16,7 +17,13 @@
             Grid.Row="0"
             HorizontalOptions="CenterAndExpand"
             Spacing="10"
-            >
+        >
+            <Button
+                HeightRequest="20"
+                x:Name ="SelectAll"
+                Text="Seleccionar Todo"
+                Command="{Binding SelectAll}"
+                />
             <VerticalStackLayout Spacing="10" HorizontalOptions="StartAndExpand">
                 <Label>
                     Inicio
@@ -47,18 +54,20 @@
                 />
                 <TimePicker
                     HorizontalOptions="StartAndExpand"
-                    /> 
-                
+                    />
             </VerticalStackLayout>
-            
-
             <Button
                 HeightRequest="20"
                 x:Name ="AddButton"
                 Text="Añadir"
                 Command="{Binding CreateTimeEntry}"
                 />
-
+            <Button
+                HeightRequest="20"
+                x:Name ="DeleteButton"
+                Text="Eliminar"
+                Command="{Binding DeleteSelected}"
+                />
         </HorizontalStackLayout>
         <Grid Grid.Row="1" ColumnDefinitions="*, 2*, *" HorizontalOptions="CenterAndExpand" ColumnSpacing="80" Margin="0, 0, 70, 0">
             <Label TextType="Html" Grid.Column="0">
@@ -72,24 +81,10 @@
         <CollectionView Grid.Row="2" ItemsSource="{Binding CurrentlyDisplayedTimeEntries}" HorizontalOptions="CenterAndExpand" Margin="0, 0, 50, 0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid x:DataType="model:TimeEntry"  ColumnDefinitions="2*, 2*, *" ColumnSpacing="20" Padding="0, 0, 20, 0" >
-                        <Grid.GestureRecognizers>
-                            <PointerGestureRecognizer PointerEntered="ShowTrashIcon" PointerExited="HideTrashIcon"/>
-                        </Grid.GestureRecognizers>
-                        <Label Text="{Binding StartingTime}" Grid.Column="0"/>
-                        <Label Text="{Binding EndingTime}" Grid.Column="1"/>
-                        <ImageButton
-                        IsVisible="false"
-                        Grid.Column="2"
-                        Margin="0, 2, 0, 2"
-                        Aspect="AspectFill"
-                        BackgroundColor="Transparent"
-                        HeightRequest="5"
-                        WidthRequest="5"
-                        Source ="can_trash.png"
-                        Command="{Binding Source={x:Reference __clientPage__}, Path=BindingContext.RemoveTimeEntry}"
-                        CommandParameter="{Binding Id}"
-                    />
+                    <Grid x:DataType="vm:TimeEntryVM"  ColumnDefinitions="*,2*, 2*" ColumnSpacing="20" Padding="0, 0, 20, 0" >
+                        <CheckBox Grid.Column="0" IsChecked="{Binding IsChecked}"/>
+                        <Label Text="{Binding StartingTime}" Grid.Column="1"/>
+                        <Label Text="{Binding EndingTime}" Grid.Column="2"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

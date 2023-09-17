@@ -12,7 +12,7 @@ namespace TempusFujit.Models
         public int ClientId { get; set; }
 
         [ForeignKey(nameof(ClientId))]
-        public Client Client {get; set;}
+        public Client Client { get; set; }
 
         [Required]
         public DateTime CreationDate { get; set; }
@@ -20,7 +20,5 @@ namespace TempusFujit.Models
         public DateTime StartingTime { get; set; }
         //If null it is draft
         public DateTime? EndingTime { get; set; }
-
-
     }
 }
