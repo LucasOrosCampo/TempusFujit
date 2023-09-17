@@ -14,17 +14,17 @@ namespace TempusFujit.ViewModels
         string _newClientDescription;
         List<Client> _clients;
         List<Client> Clients { get => _clients; set { _clients = value; UpdateDisplayedClientList(); } }
-        
+
         List<Client> _displayedClients;
-        private readonly IDbContextFactory<DatabaseContext> dbFactory = 
-            (IDbContextFactory<DatabaseContext>)MauiWinUIApplication.Current.Services.GetRequiredService(typeof(IDbContextFactory<DatabaseContext>));
+        private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.GetDb() as IDbContextFactory<DatabaseContext>;
 
         string _searchedTerm;
         public List<Client> DisplayedClients { get => _displayedClients; set { _displayedClients = value; OnPropertyChanged(); } }
 
-        public string NewClientName {
+        public string NewClientName
+        {
             get => _newClientName;
-            set 
+            set
             {
                 _newClientName = value;
                 OnPropertyChanged();
@@ -72,18 +72,18 @@ namespace TempusFujit.ViewModels
                 return;
             var newClient = new Client(NewClientName, NewClientDescription);
             db.Clients.Add(newClient);
-            if (db.SaveChanges()>0)
+            if (db.SaveChanges() > 0)
             {
                 CleanNewClientFields();
                 Clients = db.Clients.ToList();
             }
         }
 
-        private bool CanAddClient() 
+        private bool CanAddClient()
         {
             return NewClientName != null && NewClientName != "";
         }
-        
+
         private async void RemoveClient(int id)
         {
             using var db = dbFactory.CreateDbContext();
@@ -113,7 +113,7 @@ namespace TempusFujit.ViewModels
         private void CleanNewClientFields()
         {
             NewClientName = "";
-            NewClientDescription = "";    
+            NewClientDescription = "";
         }
 
     }

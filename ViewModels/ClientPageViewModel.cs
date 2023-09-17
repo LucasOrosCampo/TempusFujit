@@ -14,8 +14,7 @@ namespace TempusFujit.ViewModels
         DateTime _newStartingDate;
         DateTime _newEndingDate;
         DateTime _minEndingDate;
-        private readonly IDbContextFactory<DatabaseContext> dbFactory =
-            (IDbContextFactory<DatabaseContext>)MauiWinUIApplication.Current.Services.GetRequiredService(typeof(IDbContextFactory<DatabaseContext>));
+        private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.GetDb() as IDbContextFactory<DatabaseContext>;
 
         public List<TimeEntryVM> CurrentlyDisplayedTimeEntries
         {
@@ -154,6 +153,5 @@ namespace TempusFujit.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }
 
