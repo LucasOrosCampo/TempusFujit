@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+             xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
+             xmlns:local ="clr-namespace:TempusFujit"
+             x:Class="TempusFujit.ClientOverview"
+             x:Name="__clientPage__"
+             >
+    <VerticalStackLayout VerticalOptions="CenterAndExpand">
+        <HorizontalStackLayout
+    Grid.Row="0"
+    HorizontalOptions="CenterAndExpand"
+    Spacing="10"
+>
+            <Button
+        HeightRequest="20"
+        x:Name ="SelectAll"
+        Text="Seleccionar Todo"
+        Command="{Binding SelectAll}"
+        />
+            <VerticalStackLayout Spacing="10" HorizontalOptions="StartAndExpand">
+                <Label>
+                    Inicio
+                </Label>
+                <DatePicker
+            HorizontalOptions="StartAndExpand"
+        WidthRequest="150"
+        Date="{Binding NewStartingDate}"
+        Format="dd-MMM HH:mm"
+        MinimumDate="{Binding  MinDate}"
+        MaximumDate="{Binding  MaxDate}"
+        />
+                <TimePicker
+            HorizontalOptions="StartAndExpand"
+            />
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="10">
+                <Label>
+                    Final
+                </Label>
+                <DatePicker
+        WidthRequest="150"
+        Date="{Binding NewEndingDate}"
+        MinimumDate="{Binding MinEndingDate}"
+        MaximumDate="{Binding  MaxDate}"
+        Format="dd-MMM HH:mm"
+        HorizontalOptions="StartAndExpand"
+        />
+                <TimePicker
+            HorizontalOptions="StartAndExpand"
+            />
+            </VerticalStackLayout>
+            <Button
+        HeightRequest="20"
+        x:Name ="AddButton"
+        Text="Añadir"
+        Command="{Binding CreateTimeEntry}"
+        />
+            <Button
+        HeightRequest="20"
+        x:Name ="DeleteButton"
+        Text="Eliminar"
+        Command="{Binding DeleteSelected}"
+        />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+    
+</ContentPage>

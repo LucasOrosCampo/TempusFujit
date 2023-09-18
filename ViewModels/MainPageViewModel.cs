@@ -16,7 +16,7 @@ namespace TempusFujit.ViewModels
         List<Client> Clients { get => _clients; set { _clients = value; UpdateDisplayedClientList(); } }
 
         List<Client> _displayedClients;
-        private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.GetDb() as IDbContextFactory<DatabaseContext>;
+        private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.DbFactory;
 
         string _searchedTerm;
         public List<Client> DisplayedClients { get => _displayedClients; set { _displayedClients = value; OnPropertyChanged(); } }

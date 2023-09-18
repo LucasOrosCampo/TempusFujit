@@ -11,8 +11,10 @@ namespace TempusFujit.Infra
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
 
-            builder.Services.AddTransient<ClientPageViewModel>();
-            builder.Services.AddSingleton<ClientPage>();
+            builder.Services.AddTransient<ClientTimesDisplayVM>();
+            builder.Services.AddTransient<ClientOverviewVM>();
+            builder.Services.AddSingleton<ClientOverview>();
+            builder.Services.AddSingleton<ClientTimesDisplay>();
 
             builder.Services.AddSingleton<LoginPage>();
         }

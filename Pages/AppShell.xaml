@@ -12,11 +12,18 @@
     />
     <ShellContent
     ContentTemplate="{DataTemplate local:MainPage}"
-    Route="mainPage"
+    Route="MainPage"
     />
-    <ShellContent
-    ContentTemplate="{DataTemplate local:ClientPage}"
-    Route="ClientPage"
-    />
+    <Tab Route="Client">
+        <ShellContent
+            ContentTemplate="{DataTemplate local:ClientTimesDisplay}"
+            Route="TimesDisplay"
+            />
+        <ShellContent
+            ContentTemplate="{DataTemplate local:ClientOverview}"
+            Route="Overview"
+            />
+    </Tab>
+   
 
 </Shell>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace TempusFujit.Infra
 {
@@ -8,9 +10,13 @@ namespace TempusFujit.Infra
         {
             return MauiWinUIApplication.Current.Services.GetRequiredService(typeof(T));
         }
-        public static object GetDb()
+        public static IDbContextFactory<DatabaseContext> DbFactory =>
+             MauiWinUIApplication.Current.Services.GetRequiredService(typeof(IDbContextFactory<DatabaseContext>))
+             as IDbContextFactory<DatabaseContext>;
+
+        public static void OnPropertyChanged(this object caller, PropertyChangedEventHandler eh, [CallerMemberName] string propertyName = null)
         {
-            return MauiWinUIApplication.Current.Services.GetRequiredService(typeof(IDbContextFactory<DatabaseContext>));
+            eh?.Invoke(caller, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

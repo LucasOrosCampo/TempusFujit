@@ -76,22 +76,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\ClientTabs.xaml.cs">
-	    <DependentUpon>ClientTabs.xaml</DependentUpon>
+	  <Compile Update="Pages\Client\ClientOverview.xaml.cs">
+	    <DependentUpon>ClientOverview.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\ClientPage.xaml">
+	  <MauiXaml Update="Pages\Client\ClientOverview.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Client\ClientTimesDisplay.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\ClientTabs.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

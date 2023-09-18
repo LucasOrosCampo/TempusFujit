@@ -1,10 +1,12 @@
+using TempusFujit.ViewModels;
+
 namespace TempusFujit;
 
 public partial class MainPage : ContentPage
 {
     public Thickness GridMargin = new(100, 0, 100, 0);
     private int clientsAdded = 0;
-    public MainPage()
+    public MainPage(MainPageViewModel vm)
     {
         Application.Current.Resources[nameof(GridMargin)] = GridMargin;
         void ApplyStyleToChildren(object obj, ElementEventArgs args)
@@ -21,18 +23,19 @@ public partial class MainPage : ContentPage
             clientsAdded++;
         }
         InitializeComponent();
+        BindingContext = vm;
         clientsCollection.ChildAdded += ApplyStyleToChildren;
     }
 
     private void OnGoBackClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//LoginPage");
+        Shell.Current.GoToAsync(nameof(LoginPage));
     }
 
     private void GoToClientFromLabel(object sender, EventArgs args)
     {
-        var id = ((TappedEventArgs)args).Parameter;
-        Shell.Current.GoToAsync($"ClientPage?clientId={id}");
+        var targetClientId = (int)((TappedEventArgs)args).Parameter;
+        Shell.Current.GoToAsync($"//Client/Overview?clientId={targetClientId}");
     }
 
 
