@@ -37,7 +37,8 @@
                         Margin="0, 10, 0, 0" />
             <Button Text="Añadir"
                     HeightRequest="8"
-                    IsEnabled="{Binding IsAddButtonEnabled}"/>
+                    IsEnabled="{Binding IsAddButtonEnabled}"
+                    Command="{Binding CreateTimeEntry}"/>
         </HorizontalStackLayout>
         <Label Text="Calculo de horas"
                FontSize="Subtitle"
@@ -46,7 +47,16 @@
             <DatePicker Date="{Binding SelectedMonth}" Format="MMMM yyyy"/>
             <Label VerticalOptions="StartAndExpand"
                    FontSize="Large">→</Label>
-            <Label VerticalOptions="Center" Padding="5, 4, 0, 0" Text="{Binding HoursInSelectedMonth, StringFormat='{0} Horas'}" />
+            <Label VerticalOptions="Center"
+                   Padding="5, 4, 0, 0">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} h {1} min">
+                        <Binding Path="TimeSpentInSelectedPeriod.TotalHours"
+                                 Converter="{StaticResource hoursConverter}" />
+                        <Binding Path="TimeSpentInSelectedPeriod.Minutes" />
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
         </HorizontalStackLayout>
         <Button Text="Todos los tiempos" VerticalOptions="End" HorizontalOptions="End" Margin="0, 0, 20,10" Clicked="Button_Clicked"></Button>
     </VerticalStackLayout>

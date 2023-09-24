@@ -59,6 +59,8 @@ namespace TempusFujit.ViewModels
             IsAddButtonEnabled = initial < final;
         }
 
+        public ICommand CreateTimeEntry { get; set; }
+
         void createTimeEntry()
         {
             using var db = dbFactory.CreateDbContext();
@@ -71,19 +73,29 @@ namespace TempusFujit.ViewModels
             };
             db.TimeEntries.Add(newTimeEntry);
             db.SaveChanges();
+            ComputeHours();
             Snackbar.Make("El tiempo ha sido correctamente añadido al cliente de mama", duration: TimeSpan.FromSeconds(2)).Show();
         }
         #endregion
 
         #region Selected month 
-        int hoursInSelectedMonth;
-        public int HoursInSelectedMonth
+        TimeSpan timeSpentInSelectedPeriod;
+        public TimeSpan TimeSpentInSelectedPeriod
         {
-            get => hoursInSelectedMonth;
-            set { hoursInSelectedMonth = value; }
+            get => timeSpentInSelectedPeriod;
+            set { timeSpentInSelectedPeriod = value; OnPropertyChanged(); }
         }
-        DateTime selectedMonth = DateTime.UtcNow;
-        public DateTime SelectedMonth { get => selectedMonth; set { selectedMonth = value; } }
+        DateTime selectedMonth = DateTime.Now;
+        public DateTime SelectedMonth { get => selectedMonth; set { selectedMonth = value; ComputeHours(); } }
+
+        public void ComputeHours()
+        {
+            var month = new DateTime(SelectedMonth.Year, SelectedMonth.Month, 1).Date;
+            var nextMonth = month.AddMonths(1).AddTicks(-1);
+            using var db = dbFactory.CreateDbContext();
+            var timeEntriesInPeriod = db.TimeEntries.Where(x => x.StartingTime >= month && x.EndingTime <= nextMonth).ToList();
+            TimeSpentInSelectedPeriod = timeEntriesInPeriod.Aggregate(TimeSpan.Zero, (acc, x) => acc + ((TimeSpan)(x.EndingTime - x.StartingTime)));
+        }
         #endregion
 
         #region Property changed
@@ -93,7 +105,6 @@ namespace TempusFujit.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-        public ICommand CreateTimeEntry { get; set; }
 
         public ClientOverviewVM()
         {
