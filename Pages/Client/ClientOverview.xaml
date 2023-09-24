@@ -2,66 +2,47 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
-             xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
-             xmlns:local ="clr-namespace:TempusFujit"
-             xmlns:model ="clr-namespace:TempusFujit.Models"
+             xmlns:vm="clr-namespace:TempusFujit.ViewModels"
+             xmlns:local="clr-namespace:TempusFujit"
+             xmlns:model="clr-namespace:TempusFujit.Models"
              x:Class="TempusFujit.ClientOverview"
              x:Name="__clientPage__"
-             Title="General"
-             >
+             Title="General">
     <VerticalStackLayout VerticalOptions="StartAndExpand"
                          Margin="0, 20, 0, 0">
         <Border Margin="200, 20, 200, 20"
                 Stroke="Black"
                 StrokeThickness="2"
                 Padding="0, 5, 0, 5"
-                StrokeShape="Rectangle"
-                >
-            <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
-                   Text="{Binding Client.Name}"  FontSize="Title"/>
+                StrokeShape="Rectangle">
+            <Label HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   Text="{Binding Client.Name}"
+                   FontSize="Title" />
         </Border>
         <Label HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
-               Text="{Binding Client.Description}" FontSize="Subtitle" Margin="0, 0, 0, 20"/>
-        <HorizontalStackLayout 
-                Grid.Row="0"
-                HorizontalOptions="StartAndExpand"
-                Spacing="10">
-            <VerticalStackLayout Spacing="10" HorizontalOptions="Start" Margin="50, 0, 50, 0">
-                <DatePicker
-                    HorizontalOptions="StartAndExpand"
-                    WidthRequest="150"
-                    Date="{Binding NewStartingDate}"
-                    Format="dd-MMM HH:mm"
-                    MinimumDate="{Binding  MinDate}"
-                    MaximumDate="{Binding  MaxDate}"
-                    /> 
-                <TimePicker
-            HorizontalOptions="StartAndExpand"
-            />
-            </VerticalStackLayout>
-            <Label VerticalOptions="CenterAndExpand" FontSize="Large">→</Label>
-            <VerticalStackLayout Spacing="10">
-                <DatePicker
-        WidthRequest="150"
-        Date="{Binding NewEndingDate}"
-        MinimumDate="{Binding MinEndingDate}"
-        MaximumDate="{Binding  MaxDate}"
-        Format="dd-MMM HH:mm"
-        HorizontalOptions="StartAndExpand"
-        />
-                <TimePicker
-            HorizontalOptions="StartAndExpand"
-            />
-            </VerticalStackLayout>
-            <Button
-        HeightRequest="20"
-        x:Name ="AddButton"
-        Text="Añadir"
-        Command="{Binding CreateTimeEntry}"
-        />
+               Text="{Binding Client.Description}"
+               FontSize="Subtitle"
+               Margin="0, 0, 0, 20" />
+        <Label Text="Añadir entrada de tiempo" FontSize="Subtitle" Margin="20, 0, 0, 0"/>
+        <HorizontalStackLayout Spacing="10" Margin="20, 10 , 0, 0">
+            <DatePicker Format="dd/mm/yyyy"
+                        Date="{Binding TaskDate}" />
+            <TimePicker Format="HH:mm" 
+                        Time="{Binding TaskStartingTime}" 
+                        Margin="0, 10, 0, 0"/>
+            <TimePicker Format="HH:mm" 
+                        Time="{Binding TaskEndingTime}"
+                        Margin="0, 10, 0, 0" />
+            <Button Text="Añadir"
+                    HeightRequest="8"
+                    IsEnabled="{Binding IsAddButtonEnabled}"/>
         </HorizontalStackLayout>
-        <HorizontalStackLayout HorizontalOptions="Start" Margin="50, 50, 0, 0">
+        <Label Text="Calculo de horas"
+               FontSize="Subtitle"
+               Margin="20, 20, 0, 0" />
+        <HorizontalStackLayout HorizontalOptions="Start" Margin="50, 10, 0, 0">
             <DatePicker Date="{Binding SelectedMonth}" Format="MMMM yyyy"/>
             <Label VerticalOptions="StartAndExpand"
                    FontSize="Large">→</Label>
