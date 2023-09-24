@@ -5,7 +5,7 @@ namespace TempusFujit;
 
 public partial class ClientTimesDisplay : ContentPage
 {
-    ClientTimesDisplayVM vm;
+    public ClientTimesDisplayVM vm { get; set; }
     public ClientTimesDisplay()
     {
         vm = Services.Get<ClientTimesDisplayVM>() as ClientTimesDisplayVM;

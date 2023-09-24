@@ -35,7 +35,7 @@ public partial class MainPage : ContentPage
     private void GoToClientFromLabel(object sender, EventArgs args)
     {
         var targetClientId = (int)((TappedEventArgs)args).Parameter;
-        Shell.Current.GoToAsync($"//Client/Overview?clientId={targetClientId}");
+        Shell.Current.GoToAsync($"ClientOverview?clientId={targetClientId}");
     }
 
 

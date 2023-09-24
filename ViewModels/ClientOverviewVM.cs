@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommunityToolkit.Maui.Alerts;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TempusFujit.Infra;
 using TempusFujit.Models;
@@ -13,8 +15,8 @@ namespace TempusFujit.ViewModels
         DateTime _newStartingDate;
         DateTime _newEndingDate;
         DateTime _minEndingDate;
-        DateTime MinDate { get; } = DateTime.UtcNow.AddMonths(-1);
-        DateTime MaxDate { get; } = DateTime.UtcNow.AddMonths(1);
+        public DateTime MinDate { get; } = DateTime.UtcNow.AddMonths(-1);
+        public DateTime MaxDate { get; } = DateTime.UtcNow.AddMonths(1);
 
         int clientId;
         public int ClientId
@@ -23,8 +25,26 @@ namespace TempusFujit.ViewModels
             set
             {
                 clientId = value;
+                Client = GetClient();
             }
         }
+
+        int hoursInSelectedMonth;
+        public int HoursInSelectedMonth
+        {
+            get => hoursInSelectedMonth;
+            set { hoursInSelectedMonth = value; }
+        }
+        DateTime selectedMonth = DateTime.UtcNow;
+        public DateTime SelectedMonth { get => selectedMonth; set { selectedMonth = value; } }
+
+        private Client GetClient()
+        {
+            using var db = dbFactory.CreateDbContext();
+            return db.Clients.First(x => x.Id == clientId);
+        }
+        Client client;
+        public Client Client { get => client; set { client = value; OnPropertyChanged(); } }
         public DateTime NewStartingDate
         {
             get => _newStartingDate;
@@ -75,6 +95,12 @@ namespace TempusFujit.ViewModels
             };
             db.TimeEntries.Add(newTimeEntry);
             db.SaveChanges();
+            Snackbar.Make("El tiempo ha sido correctamente añadido al cliente de mama", duration: TimeSpan.FromSeconds(2)).Show();
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

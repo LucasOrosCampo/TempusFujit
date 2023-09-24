@@ -7,23 +7,13 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-    ContentTemplate="{DataTemplate local:LoginPage}"
-    Route="LoginPage"
-    />
-    <ShellContent
     ContentTemplate="{DataTemplate local:MainPage}"
     Route="MainPage"
     />
-    <Tab Route="Client">
-        <ShellContent
-            ContentTemplate="{DataTemplate local:ClientTimesDisplay}"
-            Route="TimesDisplay"
-            />
-        <ShellContent
-            ContentTemplate="{DataTemplate local:ClientOverview}"
-            Route="Overview"
-            />
-    </Tab>
-   
-
+    <ShellContent
+    ContentTemplate="{DataTemplate local:LoginPage}"
+    Route="LoginPage"
+    />
+    <ShellContent ContentTemplate="{DataTemplate local:ClientOverview}" />
+    <ShellContent ContentTemplate="{DataTemplate local:ClientTimesDisplay}" />
 </Shell>

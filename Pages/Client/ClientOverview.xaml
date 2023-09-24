@@ -4,41 +4,44 @@
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
              xmlns:local ="clr-namespace:TempusFujit"
+             xmlns:model ="clr-namespace:TempusFujit.Models"
              x:Class="TempusFujit.ClientOverview"
              x:Name="__clientPage__"
+             Title="General"
              >
-    <VerticalStackLayout VerticalOptions="CenterAndExpand">
-        <HorizontalStackLayout
-    Grid.Row="0"
-    HorizontalOptions="CenterAndExpand"
-    Spacing="10"
->
-            <Button
-        HeightRequest="20"
-        x:Name ="SelectAll"
-        Text="Seleccionar Todo"
-        Command="{Binding SelectAll}"
-        />
-            <VerticalStackLayout Spacing="10" HorizontalOptions="StartAndExpand">
-                <Label>
-                    Inicio
-                </Label>
+    <VerticalStackLayout VerticalOptions="StartAndExpand"
+                         Margin="0, 20, 0, 0">
+        <Border Margin="200, 20, 200, 20"
+                Stroke="Black"
+                StrokeThickness="2"
+                Padding="0, 5, 0, 5"
+                StrokeShape="Rectangle"
+                >
+            <Label HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
+                   Text="{Binding Client.Name}"  FontSize="Title"/>
+        </Border>
+        <Label HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               Text="{Binding Client.Description}" FontSize="Subtitle" Margin="0, 0, 0, 20"/>
+        <HorizontalStackLayout 
+                Grid.Row="0"
+                HorizontalOptions="StartAndExpand"
+                Spacing="10">
+            <VerticalStackLayout Spacing="10" HorizontalOptions="Start" Margin="50, 0, 50, 0">
                 <DatePicker
-            HorizontalOptions="StartAndExpand"
-        WidthRequest="150"
-        Date="{Binding NewStartingDate}"
-        Format="dd-MMM HH:mm"
-        MinimumDate="{Binding  MinDate}"
-        MaximumDate="{Binding  MaxDate}"
-        />
+                    HorizontalOptions="StartAndExpand"
+                    WidthRequest="150"
+                    Date="{Binding NewStartingDate}"
+                    Format="dd-MMM HH:mm"
+                    MinimumDate="{Binding  MinDate}"
+                    MaximumDate="{Binding  MaxDate}"
+                    /> 
                 <TimePicker
             HorizontalOptions="StartAndExpand"
             />
             </VerticalStackLayout>
+            <Label VerticalOptions="CenterAndExpand" FontSize="Large">→</Label>
             <VerticalStackLayout Spacing="10">
-                <Label>
-                    Final
-                </Label>
                 <DatePicker
         WidthRequest="150"
         Date="{Binding NewEndingDate}"
@@ -57,13 +60,15 @@
         Text="Añadir"
         Command="{Binding CreateTimeEntry}"
         />
-            <Button
-        HeightRequest="20"
-        x:Name ="DeleteButton"
-        Text="Eliminar"
-        Command="{Binding DeleteSelected}"
-        />
         </HorizontalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="Start" Margin="50, 50, 0, 0">
+            <DatePicker Date="{Binding SelectedMonth}" Format="MMMM yyyy"/>
+            <Label VerticalOptions="StartAndExpand"
+                   FontSize="Large">→</Label>
+            <Label VerticalOptions="Center" Padding="5, 4, 0, 0" Text="{Binding HoursInSelectedMonth, StringFormat='{0} Horas'}" />
+        </HorizontalStackLayout>
+        <Button Text="Todos los tiempos" VerticalOptions="End" HorizontalOptions="End" Margin="0, 0, 20,10" Clicked="Button_Clicked"></Button>
     </VerticalStackLayout>
+</ContentPage> 
     
-</ContentPage>
+    

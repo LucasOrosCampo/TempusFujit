@@ -11,9 +11,8 @@ namespace TempusFujit.ViewModels
     public class ClientTimesDisplayVM : INotifyPropertyChanged
     {
         private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.DbFactory;
+
         List<TimeEntryVM> _currentlyDisplayedTimeEntries;
-
-
         public List<TimeEntryVM> CurrentlyDisplayedTimeEntries
         {
             get => _currentlyDisplayedTimeEntries;
@@ -23,6 +22,9 @@ namespace TempusFujit.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        bool globalCheckbox;
+        public bool GlobalCheckbox { get => globalCheckbox; set { globalCheckbox = value; applyGlobalCheckbox(); } }
 
         int clientId;
         public int ClientId
@@ -34,6 +36,7 @@ namespace TempusFujit.ViewModels
                 displayTimeOfClient(value);
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand DisplayTimeOfClient { get; set; }
@@ -64,8 +67,6 @@ namespace TempusFujit.ViewModels
             CurrentlyDisplayedTimeEntries = db.TimeEntries.Where(x => x.ClientId == id).Select(x => new TimeEntryVM(x)).ToList();
         }
 
-
-
         private void deleteSelected()
         {
             using var db = dbFactory.CreateDbContext();
@@ -73,10 +74,18 @@ namespace TempusFujit.ViewModels
             var te = db.TimeEntries.Where(e => idsToBeDeleted.Contains(e.Id)).ExecuteDelete();
             displayTimeOfClient(ClientId);
         }
+
+        void applyGlobalCheckbox()
+        {
+            var times = CurrentlyDisplayedTimeEntries;
+            times.ForEach(x => x.IsChecked = GlobalCheckbox);
+            CurrentlyDisplayedTimeEntries = times;
+        }
     }
     public class TimeEntryVM : TimeEntry, INotifyPropertyChanged
     {
         bool isChecked = false;
+        public string Duration { get; set; }
         public bool IsChecked
         {
             get => isChecked;
@@ -97,7 +106,8 @@ namespace TempusFujit.ViewModels
             CreationDate = te.CreationDate;
             StartingTime = te.StartingTime;
             EndingTime = te.EndingTime;
+            var durationSpan = te.EndingTime is null ? null : (te.EndingTime - te.StartingTime);
+            Duration = durationSpan.HasValue ? $"{durationSpan.Value.Days} d {durationSpan.Value.Hours} h {durationSpan.Value.Minutes} m" : "";
         }
     }
 }
-
