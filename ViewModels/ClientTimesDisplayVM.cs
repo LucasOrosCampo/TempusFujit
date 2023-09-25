@@ -106,8 +106,16 @@ namespace TempusFujit.ViewModels
             CreationDate = te.CreationDate;
             StartingTime = te.StartingTime;
             EndingTime = te.EndingTime;
-            var durationSpan = te.EndingTime is null ? null : (te.EndingTime - te.StartingTime);
-            Duration = durationSpan.HasValue ? $"{durationSpan.Value.Days} d {durationSpan.Value.Hours} h {durationSpan.Value.Minutes} m" : "";
+            var durationSpan = te.EndingTime - te.StartingTime;
+            var displayY = durationSpan.Hours > 0 && durationSpan.Minutes > 0;
+            var separator = displayY ? " y " : " ";
+            Duration = $"{GetString("hora", durationSpan.Hours)} {separator} {GetString("minuto", durationSpan.Minutes)}";
+            string GetString(string type, int value) => value == 0
+                                                            ? ""
+                                                            : value == 1
+                                                                ? value.ToString() + " " + type
+                                                                : value.ToString() + " " + type + "s";
+
         }
     }
 }

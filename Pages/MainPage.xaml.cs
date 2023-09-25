@@ -27,11 +27,6 @@ public partial class MainPage : ContentPage
         clientsCollection.ChildAdded += ApplyStyleToChildren;
     }
 
-    private void OnGoBackClicked(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync(nameof(LoginPage));
-    }
-
     private void GoToClientFromLabel(object sender, EventArgs args)
     {
         var targetClientId = (int)((TappedEventArgs)args).Parameter;
@@ -48,5 +43,10 @@ public partial class MainPage : ContentPage
     {
         var btn = (ImageButton)((Grid)sender).Children[2];
         btn.IsVisible = false;
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(Categories));
     }
 }

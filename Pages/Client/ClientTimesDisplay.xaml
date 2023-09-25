@@ -16,7 +16,7 @@
                   Grid.Column="1"
                   x:Name="Header"
                   BackgroundColor="#6f6f6f"
-                  ColumnDefinitions="50, *, *, 0.5*">
+                  ColumnDefinitions="50, *, *, *, 0.5*">
                 <Border Grid.Column="0"
                         BackgroundColor="White"
                         Stroke="#151e23"
@@ -28,10 +28,18 @@
                          Stroke="#151e23">
                     <Label HorizontalOptions="Center"
                            VerticalOptions="Center"
-                           Text="INICIAL"
+                           Text="Fecha"
+                           FontAttributes="Bold" />
+                </Border> 
+                <Border  Grid.Column="2"
+                         StrokeThickness="0.5"
+                         Stroke="#151e23">
+                    <Label HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Text="INICIO"
                            FontAttributes="Bold" />
                 </Border>
-                <Border Grid.Column="2"
+                <Border Grid.Column="3"
                         Stroke="#151e23"
                         StrokeThickness="0.5">
                     <Label HorizontalOptions="Center"
@@ -39,7 +47,7 @@
                            Text="FINAL"
                            FontAttributes="Bold"/>
                 </Border>
-                <Border Grid.Column="3"
+                <Border Grid.Column="4"
                         StrokeThickness="0.5"
                         Stroke="#151e23">
                     <Label HorizontalOptions="Center"
@@ -54,7 +62,7 @@
                             x:Name="DataRows">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:TimeEntryVM">
-                        <Grid ColumnDefinitions="50, *, *, 0.5*"
+                        <Grid ColumnDefinitions="50, *, *, *, 0.5*"
                               BackgroundColor="#dbd1d0">
                             <Border Grid.Column="0"
                                     BackgroundColor="White"
@@ -69,16 +77,23 @@
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       Text="{Binding StartingTime}" />
+                                       Text="{Binding StartingTime.Date, StringFormat='{}{0:dd}/{0:MM}/{0:yyyy}'}" />
                             </Border>
                             <Border Grid.Column="2"
                                     StrokeThickness="0.5"
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       Text="{Binding EndingTime}" />
+                                       Text="{Binding StartingTime.TimeOfDay, Converter={StaticResource TimespanHourMinConverter}}" />
                             </Border>
                             <Border Grid.Column="3"
+                                    StrokeThickness="0.5"
+                                    Stroke="#151e23">
+                                <Label HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       Text="{Binding EndingTime.TimeOfDay, Converter={StaticResource TimespanHourMinConverter}}" />
+                            </Border>
+                            <Border Grid.Column="4"
                                     StrokeThickness="0.5"
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"

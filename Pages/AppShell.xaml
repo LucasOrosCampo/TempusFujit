@@ -16,4 +16,5 @@
     />
     <ShellContent ContentTemplate="{DataTemplate local:ClientOverview}" />
     <ShellContent ContentTemplate="{DataTemplate local:ClientTimesDisplay}" />
+    <ShellContent ContentTemplate="{DataTemplate local:Categories}" />
 </Shell>

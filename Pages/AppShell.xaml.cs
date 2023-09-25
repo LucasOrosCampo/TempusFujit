@@ -7,5 +7,6 @@ public partial class AppShell : Shell
         InitializeComponent();
         Routing.RegisterRoute(nameof(ClientOverview), typeof(ClientOverview));
         Routing.RegisterRoute(nameof(ClientTimesDisplay), typeof(ClientTimesDisplay));
+        Routing.RegisterRoute(nameof(Categories), typeof(Categories));
     }
 }

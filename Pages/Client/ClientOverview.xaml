@@ -35,8 +35,13 @@
             <TimePicker Format="HH:mm" 
                         Time="{Binding TaskEndingTime}"
                         Margin="0, 10, 0, 0" />
+            <Picker 
+                ItemsSource="{Binding Categories}"
+                SelectedItem="{Binding SelectedCategory}"
+                ItemDisplayBinding="{Binding Name}" />
             <Button Text="Añadir"
                     HeightRequest="8"
+                    Margin="0, 0, 0, 10"
                     IsEnabled="{Binding IsAddButtonEnabled}"
                     Command="{Binding CreateTimeEntry}"/>
         </HorizontalStackLayout>

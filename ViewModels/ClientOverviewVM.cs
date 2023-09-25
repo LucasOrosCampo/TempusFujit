@@ -41,41 +41,55 @@ namespace TempusFujit.ViewModels
         public TimeSpan TaskStartingTime
         {
             get => taskStartingTime;
-            set { taskStartingTime = value; UpdateAddButton(value, TaskEndingTime); }
+            set { taskStartingTime = value; UpdateAddButton(value, TaskEndingTime, SelectedCategory); }
         }
 
         TimeSpan taskEndingTime = DateTime.Now.TimeOfDay;
         public TimeSpan TaskEndingTime
         {
             get => taskEndingTime;
-            set { taskEndingTime = value; UpdateAddButton(TaskStartingTime, value); }
+            set { taskEndingTime = value; UpdateAddButton(TaskStartingTime, value, SelectedCategory); }
         }
 
         bool isAddButtonEnabled;
         public bool IsAddButtonEnabled { get => isAddButtonEnabled; set { isAddButtonEnabled = value; OnPropertyChanged(); } }
 
-        private void UpdateAddButton(TimeSpan initial, TimeSpan final)
+        private void UpdateAddButton(TimeSpan initial, TimeSpan final, Category categorySelected)
         {
-            IsAddButtonEnabled = initial < final;
+            IsAddButtonEnabled = initial < final && categorySelected != null;
         }
 
         public ICommand CreateTimeEntry { get; set; }
 
         void createTimeEntry()
         {
+            if (TaskStartingTime >= TaskEndingTime || SelectedCategory == null)
+                return;
             using var db = dbFactory.CreateDbContext();
+            var exist = db.Categories.Any();
             var newTimeEntry = new TimeEntry
             {
                 ClientId = ClientId,
                 CreationDate = DateTime.UtcNow,
                 StartingTime = TaskDate.Date.Add(TaskStartingTime),
-                EndingTime = TaskDate.Date.Add(TaskEndingTime)
+                EndingTime = TaskDate.Date.Add(TaskEndingTime),
+                CategoryId = SelectedCategory.Id
             };
             db.TimeEntries.Add(newTimeEntry);
             db.SaveChanges();
             ComputeHours();
             Snackbar.Make("El tiempo ha sido correctamente añadido al cliente de mama", duration: TimeSpan.FromSeconds(2)).Show();
         }
+        List<Category> categories;
+        public List<Category> Categories { get => categories; set { categories = value; OnPropertyChanged(); } }
+        public void loadCategories()
+        {
+            using var db = dbFactory.CreateDbContext();
+            Categories = db.Categories.ToList();
+        }
+        Category selectedCategory;
+        public Category SelectedCategory { get => selectedCategory; set { selectedCategory = value; UpdateAddButton(TaskStartingTime, TaskEndingTime, value); } }
+
         #endregion
 
         #region Selected month 

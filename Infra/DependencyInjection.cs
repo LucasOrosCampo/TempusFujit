@@ -8,15 +8,20 @@ namespace TempusFujit.Infra
         {
             builder.Services.AddSingleton<IDbContextFactory, DbContextFactory>();
 
-            builder.Services.AddSingleton<MainPageViewModel>();
-            builder.Services.AddSingleton<MainPage>();
-
-            builder.Services.AddTransient<ClientTimesDisplayVM>();
-            builder.Services.AddTransient<ClientOverviewVM>();
-            builder.Services.AddSingleton<ClientOverview>();
-            builder.Services.AddSingleton<ClientTimesDisplay>();
-
             builder.Services.AddSingleton<LoginPage>();
+
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<MainPageViewModel>();
+
+            builder.Services.AddSingleton<Categories>();
+            builder.Services.AddTransient<CategoriesVM>();
+
+            builder.Services.AddSingleton<ClientOverview>();
+            builder.Services.AddTransient<ClientOverviewVM>();
+
+            builder.Services.AddSingleton<ClientTimesDisplay>();
+            builder.Services.AddTransient<ClientTimesDisplayVM>();
+
         }
     }
 }

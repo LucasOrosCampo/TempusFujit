@@ -19,6 +19,12 @@ namespace TempusFujit.Models
         [Required]
         public DateTime StartingTime { get; set; }
         //If null it is draft
-        public DateTime? EndingTime { get; set; }
+        public DateTime EndingTime { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; }
     }
 }

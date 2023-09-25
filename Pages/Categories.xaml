@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:TempusFujit.Converters"
+             xmlns:model="clr-namespace:TempusFujit.Models"
+             xmlns:vm="clr-namespace:TempusFujit.ViewModels"
+             x:Class="TempusFujit.Categories"
+             x:Name="_Categories_"
+             Title="Categorias">
+    <Grid RowDefinitions="20, 50,20, *, 20" ColumnDefinitions="20, *, 20" >
+        <HorizontalStackLayout Grid.Column="1"
+                               Grid.Row="1" HorizontalOptions="Center">
+            <Entry 
+                   HeightRequest="50"
+                   WidthRequest="200"
+                   Text="{Binding NewCategory}"/>
+            <Button Margin="20, 0, 0, 0"
+                    Text="Añadir"
+                    Command="{Binding CreateCategory}"
+                    IsEnabled="{Binding NewCategory, Converter={x:Static converters:StringNotEmptyThenEnabledConverter.Instance}}"/>
+        </HorizontalStackLayout>
+        <CollectionView Grid.Column="1"
+                        Grid.Row="3"
+                        ItemsSource="{Binding Categories}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Category">
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label Margin="20, 5, 50, 10" Text="{Binding Name}" FontSize="Subtitle" HorizontalOptions="Start"/>
+                            <Button Text="Eliminar"
+                                    HorizontalOptions="End"
+                                    Command="{Binding Source={x:Reference _Categories_}, Path=vm.DeleteCategory}"
+                                    CommandParameter="{Binding Id}" />
+                        </HorizontalStackLayout>
+                        <BoxView HeightRequest="1"
+                                 BackgroundColor="Gray"
+                                 HorizontalOptions="FillAndExpand"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

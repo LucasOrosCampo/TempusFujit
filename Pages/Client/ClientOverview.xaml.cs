@@ -20,6 +20,7 @@ public partial class ClientOverview : ContentPage
     private void ClientOverview_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
         vm.ComputeHours();
+        vm.loadCategories();
     }
 
     private void Button_Clicked(object sender, EventArgs e)
