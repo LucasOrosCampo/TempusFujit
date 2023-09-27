@@ -116,7 +116,7 @@ namespace TempusFujit.ViewModels
         {
             filterDisplayedTimes();
             computeTotalDuration();
-    }
+        }
 
         void computeTotalDuration()
         {

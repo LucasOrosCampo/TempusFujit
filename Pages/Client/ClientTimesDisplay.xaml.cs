@@ -21,7 +21,6 @@ public partial class ClientTimesDisplay : ContentPage
     private void ClientTimesDisplay_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
         vm.loadAllCategories();
-        vm.FilterAndCompute();
     }
 }
 
