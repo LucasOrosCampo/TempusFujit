@@ -12,7 +12,7 @@ public partial class ClientOverview : ContentPage
     {
         vm = Services.Get<ClientOverviewVM>() as ClientOverviewVM;
         BindingContext = vm;
-        this.Resources.Add("hoursConverter", new ConvertDecimalToRounded());
+        Resources.Add("hoursConverter", new ConvertDecimalToRounded());
         InitializeComponent();
         NavigatedTo += ClientOverview_NavigatedTo;
     }

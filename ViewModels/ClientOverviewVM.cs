@@ -108,7 +108,7 @@ namespace TempusFujit.ViewModels
             var nextMonth = month.AddMonths(1).AddTicks(-1);
             using var db = dbFactory.CreateDbContext();
             var timeEntriesInPeriod = db.TimeEntries.Where(x => x.StartingTime >= month && x.EndingTime <= nextMonth).ToList();
-            TimeSpentInSelectedPeriod = timeEntriesInPeriod.Aggregate(TimeSpan.Zero, (acc, x) => acc + ((TimeSpan)(x.EndingTime - x.StartingTime)));
+            TimeSpentInSelectedPeriod = timeEntriesInPeriod.Aggregate(TimeSpan.Zero, (acc, x) => acc + (x.EndingTime - x.StartingTime));
         }
         #endregion
 

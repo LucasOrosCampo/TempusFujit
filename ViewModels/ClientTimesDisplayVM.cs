@@ -12,6 +12,7 @@ namespace TempusFujit.ViewModels
     {
         private readonly IDbContextFactory<DatabaseContext> dbFactory = Services.DbFactory;
 
+        List<TimeEntryVM> allEntries;
         List<TimeEntryVM> _currentlyDisplayedTimeEntries;
         public List<TimeEntryVM> CurrentlyDisplayedTimeEntries
         {
@@ -33,23 +34,16 @@ namespace TempusFujit.ViewModels
             set
             {
                 clientId = value;
-                displayTimeOfClient(value);
+                loadTimeEntries(value);
+                FilterAndCompute();
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand DisplayTimeOfClient { get; set; }
         public ICommand DeleteSelected { get; set; }
         public ICommand SelectAll { get; set; }
 
-        public ClientTimesDisplayVM()
-        {
-            CurrentlyDisplayedTimeEntries = new List<TimeEntryVM>();
-            DisplayTimeOfClient = new Command<int>(execute: id => displayTimeOfClient(id));
-            DeleteSelected = new Command(execute: () => deleteSelected());
-            SelectAll = new Command(execute: () => selectAll());
-        }
 
         private void selectAll()
         {
@@ -61,10 +55,17 @@ namespace TempusFujit.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void displayTimeOfClient(int id)
+        private void loadTimeEntries(int id)
         {
             using var db = dbFactory.CreateDbContext();
-            CurrentlyDisplayedTimeEntries = db.TimeEntries.Where(x => x.ClientId == id).Select(x => new TimeEntryVM(x)).ToList();
+            allEntries = db.TimeEntries.Where(x => x.ClientId == id).Include(x => x.Category).Select(x => new TimeEntryVM(x)).ToList();
+            CurrentlyDisplayedTimeEntries = allEntries;
+        }
+
+        void updateTimeEntries(int id)
+        {
+            loadTimeEntries(id);
+            filterDisplayedTimes();
         }
 
         private void deleteSelected()
@@ -72,7 +73,7 @@ namespace TempusFujit.ViewModels
             using var db = dbFactory.CreateDbContext();
             var idsToBeDeleted = CurrentlyDisplayedTimeEntries.Where(x => x.IsChecked).Select(x => x.Id).ToList();
             var te = db.TimeEntries.Where(e => idsToBeDeleted.Contains(e.Id)).ExecuteDelete();
-            displayTimeOfClient(ClientId);
+            updateTimeEntries(ClientId);
         }
 
         void applyGlobalCheckbox()
@@ -80,6 +81,66 @@ namespace TempusFujit.ViewModels
             var times = CurrentlyDisplayedTimeEntries;
             times.ForEach(x => x.IsChecked = GlobalCheckbox);
             CurrentlyDisplayedTimeEntries = times;
+        }
+
+        #region Filters
+        DateTime startFilter = DateTime.Today;
+        public DateTime StartFilter { get => startFilter; set { startFilter = value; FilterAndCompute(); } }
+        bool startFilterActive;
+        public bool StartFilterActive { get => startFilterActive; set { startFilterActive = value; FilterAndCompute(); } }
+
+        DateTime endFilter = DateTime.Today;
+        public DateTime EndFilter { get => endFilter; set { endFilter = value; FilterAndCompute(); } }
+        bool endFilterActive;
+        public bool EndFilterActive { get => endFilterActive; set { endFilterActive = value; FilterAndCompute(); } }
+
+
+        Category selectedCategory;
+        public Category SelectedCategory { get => selectedCategory; set { selectedCategory = value; FilterAndCompute(); } }
+        bool categoryFilterActive;
+        public bool CategoryFilterActive { get => categoryFilterActive; set { categoryFilterActive = value; FilterAndCompute(); } }
+
+
+        List<Category> allCategories;
+        public List<Category> AllCategories { get => allCategories; set { allCategories = value; OnPropertyChanged(); } }
+        public void loadAllCategories()
+        {
+            using var db = dbFactory.CreateDbContext();
+            AllCategories = db.Categories.ToList();
+        }
+
+        TimeSpan totalDuration;
+        public TimeSpan TotalDuration { get => totalDuration; set { totalDuration = value; OnPropertyChanged(); } }
+
+        public void FilterAndCompute()
+        {
+            filterDisplayedTimes();
+            computeTotalDuration();
+    }
+
+        void computeTotalDuration()
+        {
+            TotalDuration = CurrentlyDisplayedTimeEntries.Aggregate(TimeSpan.Zero, (acc, x) => acc = acc + (x.EndingTime - x.StartingTime));
+        }
+
+        void filterDisplayedTimes()
+        {
+            var currentDisplayed = CurrentlyDisplayedTimeEntries;
+            if (StartFilterActive)
+                currentDisplayed = currentDisplayed.Where(x => x.StartingTime >= StartFilter.Date).ToList();
+            if (EndFilterActive)
+                currentDisplayed = currentDisplayed.Where(x => x.EndingTime <= EndFilter.Date.AddDays(1).AddTicks(-1)).ToList();
+            if (CategoryFilterActive && SelectedCategory != null)
+                currentDisplayed = currentDisplayed.Where(x => x.Category.Id == SelectedCategory.Id).ToList();
+            CurrentlyDisplayedTimeEntries = currentDisplayed;
+        }
+
+        #endregion
+        public ClientTimesDisplayVM()
+        {
+            CurrentlyDisplayedTimeEntries = new List<TimeEntryVM>();
+            DeleteSelected = new Command(execute: () => deleteSelected());
+            SelectAll = new Command(execute: () => selectAll());
         }
     }
     public class TimeEntryVM : TimeEntry, INotifyPropertyChanged
@@ -106,6 +167,7 @@ namespace TempusFujit.ViewModels
             CreationDate = te.CreationDate;
             StartingTime = te.StartingTime;
             EndingTime = te.EndingTime;
+            Category = te.Category;
             var durationSpan = te.EndingTime - te.StartingTime;
             var displayY = durationSpan.Hours > 0 && durationSpan.Minutes > 0;
             var separator = displayY ? " y " : " ";
@@ -115,7 +177,6 @@ namespace TempusFujit.ViewModels
                                                             : value == 1
                                                                 ? value.ToString() + " " + type
                                                                 : value.ToString() + " " + type + "s";
-
         }
     }
 }

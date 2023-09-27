@@ -13,6 +13,15 @@ public partial class ClientTimesDisplay : ContentPage
         BindingContext = vm;
         InitializeComponent();
         Resources.Add("TimespanHourMinConverter", new TimespanHourMinConverter());
+        Resources.Add("hoursConverter", new ConvertDecimalToRounded());
+
+        NavigatedTo += ClientTimesDisplay_NavigatedTo;
+    }
+
+    private void ClientTimesDisplay_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        vm.loadAllCategories();
+        vm.FilterAndCompute();
     }
 }
 
