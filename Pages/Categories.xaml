@@ -24,17 +24,23 @@
                         ItemsSource="{Binding Categories}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Category">
-                    <VerticalStackLayout>
-                        <HorizontalStackLayout>
-                            <Label Margin="20, 5, 50, 10" Text="{Binding Name}" FontSize="Subtitle" HorizontalOptions="Start"/>
-                            <Button Text="Eliminar"
-                                    HorizontalOptions="End"
-                                    Command="{Binding Source={x:Reference _Categories_}, Path=vm.DeleteCategory}"
-                                    CommandParameter="{Binding Id}" />
-                        </HorizontalStackLayout>
+                    <VerticalStackLayout Margin="10,2" Spacing="3">
+                        <Grid ColumnDefinitions="20, *, 200, 20" >
+                            <Label Margin="0, 5, 50, 10"
+                                   Text="{Binding Name}"
+                                   FontSize="Subtitle" 
+                                   FontAttributes="Bold"
+                                   Grid.Column="1"/>
+                            <Button 
+                                WidthRequest="100"
+                                    Text="Eliminar"
+                                    Command="{Binding Source={x:Reference _Categories_}, Path= vm.DeleteCategory}"
+                                    CommandParameter="{Binding Id}" 
+                                    Grid.Column="2"/>
+                        </Grid>
                         <BoxView HeightRequest="1"
                                  BackgroundColor="Gray"
-                                 HorizontalOptions="FillAndExpand"/>
+                                 HorizontalOptions="FillAndExpand" />
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
