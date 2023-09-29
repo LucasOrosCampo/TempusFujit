@@ -125,14 +125,14 @@ namespace TempusFujit.ViewModels
 
         void filterDisplayedTimes()
         {
-            var currentDisplayed = CurrentlyDisplayedTimeEntries;
+            var newCurrentlyDisplayed = allEntries;
             if (StartFilterActive)
-                currentDisplayed = currentDisplayed.Where(x => x.StartingTime >= StartFilter.Date).ToList();
+                newCurrentlyDisplayed = newCurrentlyDisplayed.Where(x => x.StartingTime >= StartFilter.Date).ToList();
             if (EndFilterActive)
-                currentDisplayed = currentDisplayed.Where(x => x.EndingTime <= EndFilter.Date.AddDays(1).AddTicks(-1)).ToList();
+                newCurrentlyDisplayed = newCurrentlyDisplayed.Where(x => x.EndingTime <= EndFilter.Date.AddDays(1).AddTicks(-1)).ToList();
             if (CategoryFilterActive && SelectedCategory != null)
-                currentDisplayed = currentDisplayed.Where(x => x.Category.Id == SelectedCategory.Id).ToList();
-            CurrentlyDisplayedTimeEntries = currentDisplayed;
+                newCurrentlyDisplayed = newCurrentlyDisplayed.Where(x => x.Category.Id == SelectedCategory.Id).ToList();
+            CurrentlyDisplayedTimeEntries = newCurrentlyDisplayed;
         }
 
         #endregion
