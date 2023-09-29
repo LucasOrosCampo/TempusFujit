@@ -1,4 +1,3 @@
-using System.Globalization;
 using TempusFujit.Infra;
 using TempusFujit.ViewModels;
 
@@ -12,7 +11,6 @@ public partial class ClientOverview : ContentPage
     {
         vm = Services.Get<ClientOverviewVM>() as ClientOverviewVM;
         BindingContext = vm;
-        Resources.Add("hoursConverter", new ConvertDecimalToRounded());
         InitializeComponent();
         NavigatedTo += ClientOverview_NavigatedTo;
     }
@@ -26,19 +24,5 @@ public partial class ClientOverview : ContentPage
     private void Button_Clicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync($"{nameof(ClientTimesDisplay)}?clientId={vm.ClientId}");
-    }
-}
-
-public class ConvertDecimalToRounded : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        double dValue = (double)value;
-        return (int)dValue;
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return null;
     }
 }

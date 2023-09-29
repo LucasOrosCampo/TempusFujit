@@ -145,8 +145,9 @@ namespace TempusFujit.ViewModels
     }
     public class TimeEntryVM : TimeEntry, INotifyPropertyChanged
     {
+        public TimeSpan Duration { get; set; }
+
         bool isChecked = false;
-        public string Duration { get; set; }
         public bool IsChecked
         {
             get => isChecked;
@@ -168,15 +169,7 @@ namespace TempusFujit.ViewModels
             StartingTime = te.StartingTime;
             EndingTime = te.EndingTime;
             Category = te.Category;
-            var durationSpan = te.EndingTime - te.StartingTime;
-            var displayY = durationSpan.Hours > 0 && durationSpan.Minutes > 0;
-            var separator = displayY ? " y " : " ";
-            Duration = $"{GetString("hora", durationSpan.Hours)} {separator} {GetString("minuto", durationSpan.Minutes)}";
-            string GetString(string type, int value) => value == 0
-                                                            ? ""
-                                                            : value == 1
-                                                                ? value.ToString() + " " + type
-                                                                : value.ToString() + " " + type + "s";
+            Duration = te.EndingTime - te.StartingTime;
         }
     }
 }

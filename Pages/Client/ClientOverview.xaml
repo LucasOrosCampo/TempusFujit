@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:TempusFujit.ViewModels"
              xmlns:local="clr-namespace:TempusFujit"
              xmlns:model="clr-namespace:TempusFujit.Models"
+             xmlns:converters="clr-namespace:TempusFujit.Converters"
              x:Class="TempusFujit.ClientOverview"
              x:Name="__clientPage__"
              Title="General">
@@ -53,15 +54,8 @@
             <Label VerticalOptions="StartAndExpand"
                    FontSize="Large">→</Label>
             <Label VerticalOptions="Center"
-                   Padding="5, 4, 0, 0">
-                <Label.Text>
-                    <MultiBinding StringFormat="{}{0} h {1} min">
-                        <Binding Path="TimeSpentInSelectedPeriod.TotalHours"
-                                 Converter="{StaticResource hoursConverter}" />
-                        <Binding Path="TimeSpentInSelectedPeriod.Minutes" />
-                    </MultiBinding>
-                </Label.Text>
-            </Label>
+                   Padding="5, 4, 0, 0"
+                   Text="{Binding TimeSpentInSelectedPeriod, Converter={x:Static converters:Timespan2TotalHourAndMinutes.Instance}}"/>
         </HorizontalStackLayout>
         <Button Text="Todos los tiempos" VerticalOptions="End" HorizontalOptions="End" Margin="0, 0, 20,10" Clicked="Button_Clicked"></Button>
     </VerticalStackLayout>

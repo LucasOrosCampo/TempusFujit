@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm ="clr-namespace:TempusFujit.ViewModels"
              xmlns:local ="clr-namespace:TempusFujit"
+             xmlns:converters ="clr-namespace:TempusFujit.Converters"
              x:Class="TempusFujit.ClientTimesDisplay"
              Title="Tiempos">
     <Grid RowDefinitions="100, *" Margin="0, 10, 0, 0">
@@ -29,17 +30,8 @@
                     SelectedItem="{Binding SelectedCategory}"
                     ItemDisplayBinding="{Binding Name}"
                     IsVisible="{Binding IsChecked, Source={x:Reference filterCategory}}"/>
-            <Border>
-                <Label>
-                    <Label.Text>
-                        <MultiBinding StringFormat="{}{0} h {1} min">
-                            <Binding Path="TotalDuration.TotalHours"
-                                     Converter="{StaticResource hoursConverter}" />
-                            <Binding Path="TotalDuration.Minutes" />
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
-                
+            <Border IsVisible="{Binding TotalDuration, Converter={x:Static converters:IsNotEmptyTimespan.Instance}}">
+                <Label Margin="0, 10, 0, 0" Padding="10, 10" FontAttributes="Bold" Text="{Binding TotalDuration, Converter={x:Static converters:Timespan2TotalHourAndMinutes.Instance}}" />
             </Border>
             <Button HeightRequest="20"
                     x:Name="DeleteButton"
@@ -138,21 +130,21 @@
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       Text="{Binding StartingTime.TimeOfDay, Converter={StaticResource TimespanHourMinConverter}}" />
+                                       Text="{Binding StartingTime.TimeOfDay, Converter={x:Static converters:Timespan2TimeOfDay.Instance}}" />
                             </Border>
                             <Border Grid.Column="4"
                                     StrokeThickness="0.5"
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       Text="{Binding EndingTime.TimeOfDay, Converter={StaticResource TimespanHourMinConverter}}" />
+                                       Text="{Binding EndingTime.TimeOfDay, Converter={x:Static converters:Timespan2TimeOfDay.Instance}}" />
                             </Border>
                             <Border Grid.Column="5"
                                     StrokeThickness="0.5"
                                     Stroke="#151e23">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
-                                       Text="{Binding Duration}" />
+                                       Text="{Binding Duration, Converter={x:Static converters:Timespan2TotalHourAndMinutes.Instance}}" />
                             </Border>
                         </Grid>
                     </DataTemplate>
