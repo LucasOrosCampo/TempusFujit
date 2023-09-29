@@ -70,7 +70,7 @@ namespace TempusFujit.ViewModels
             var newTimeEntry = new TimeEntry
             {
                 ClientId = ClientId,
-                CreationDate = DateTime.UtcNow,
+                CreationDate = DateTime.Now,
                 StartingTime = TaskDate.Date.Add(TaskStartingTime),
                 EndingTime = TaskDate.Date.Add(TaskEndingTime),
                 CategoryId = SelectedCategory.Id
@@ -122,7 +122,7 @@ namespace TempusFujit.ViewModels
 
         public ClientOverviewVM()
         {
-            TaskDate = DateTime.UtcNow;
+            TaskDate = DateTime.Now;
             CreateTimeEntry = new Command(execute: () => createTimeEntry());
         }
     }
