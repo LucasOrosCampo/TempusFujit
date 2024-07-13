@@ -6,8 +6,6 @@ namespace TempusFujit.Infra
     {
         public static void RegisterRepositories(MauiAppBuilder builder)
         {
-            builder.Services.AddSingleton<IDbContextFactory, DbContextFactory>();
-
             builder.Services.AddSingleton<LoginPage>();
 
             builder.Services.AddSingleton<MainPage>();

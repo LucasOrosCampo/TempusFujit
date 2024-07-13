@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 using TempusFujit.Infra;
 
 namespace TempusFujit;
@@ -10,13 +9,6 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var a = Assembly.GetExecutingAssembly();
-        using var stream = a.GetManifestResourceStream("TempusFujit.appsettings.json");
-
-        var config = new ConfigurationBuilder()
-            .AddJsonStream(stream)
-            .Build();
-
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
@@ -27,22 +19,21 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("YsabeauOffice-Black.ttf", "YsabeauOfficeBlack");
             });
-
-        builder.Configuration.AddConfiguration(config);
-
+        builder.Configuration.AddJsonFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json"));
         var settings = builder.Configuration.GetRequiredSection("Settings").Get<Settings>();
 
-        builder.Services.AddDbContextFactory<DatabaseContext>(options => options.UseSqlite(settings.DbConnectionString));
-
-        var dbBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        using var dbContext = new DatabaseContext(dbBuilder.UseSqlite(settings.DbConnectionString).Options);
-        dbContext.Database.Migrate();
+        DbPathManager.InitializeDbConfig(settings.DbConnectionString);
+        var dbConnectionString = DbPathManager.GetDbConnectionString();
+        DatabaseContextFactory.SetDbConnectionString(dbConnectionString);
+        builder.Services.AddDbContextFactory<DatabaseContext, DatabaseContextFactory>();
 
         DependencyInjection.RegisterRepositories(builder);
+        var app = builder.Build();
 
-        return builder.Build();
+        var dbFactory = app.Services.GetRequiredService(typeof(IDbContextFactory<DatabaseContext>)) as IDbContextFactory<DatabaseContext>;
+        using var db = dbFactory.CreateDbContext();
+        db.Database.Migrate();
+
+        return app;
     }
-
-
-
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommunityToolkit.Maui.Storage;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -53,6 +54,7 @@ namespace TempusFujit.ViewModels
 
         public ICommand AddClientCmd { get; set; }
         public ICommand RemoveClientCmd { get; set; }
+        public ICommand ChangeDbSourceCmd { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,11 +63,12 @@ namespace TempusFujit.ViewModels
             using var db = dbFactory.CreateDbContext();
             Clients = db.Clients.ToList();
 
-            AddClientCmd = new Command(execute: obj => AddClient());
+            AddClientCmd = new Command(execute: _ => AddClient());
             RemoveClientCmd = new Command<int>(execute: id => RemoveClient(id));
+            ChangeDbSourceCmd = new Command(execute: _ => ChangeDbSource());
         }
 
-        private async void AddClient()
+        private void AddClient()
         {
             using var db = dbFactory.CreateDbContext();
             if (!CanAddClient())
@@ -84,7 +87,7 @@ namespace TempusFujit.ViewModels
             return NewClientName != null && NewClientName != "";
         }
 
-        private async void RemoveClient(int id)
+        private void RemoveClient(int id)
         {
             using var db = dbFactory.CreateDbContext();
             var clientToDelete = db.Clients.First(x => x.Id == id);
@@ -93,7 +96,15 @@ namespace TempusFujit.ViewModels
             {
                 Clients = db.Clients.ToList();
             }
+        }
 
+        private async void ChangeDbSource()
+        {
+            var folder =await FolderPicker.Default.PickAsync();
+            if (folder.IsSuccessful)
+                DbPathManager.UpdateDbPath(folder.Folder.Path);
+            using var db = dbFactory.CreateDbContext();
+            Clients = db.Clients.ToList();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -9,33 +9,37 @@
              x:Name="__MainPage__"
 >
     <Grid RowDefinitions="70,*,0.8*,0.8*,6*">
-        <Button Grid.Row="0"
+        <HorizontalStackLayout Grid.Row="0">
+            <Button 
                 HorizontalOptions="Start"
                 Margin="20, 10, 0, 0"
                 HeightRequest="50"
                 Text="Categorias"
                 Clicked="Button_Clicked"/>
+            <ImageButton HorizontalOptions="End"
+                         Aspect="Center"
+                         CornerRadius="8"
+                         Source="db.png"
+                         BackgroundColor="AliceBlue"
+                         HeightRequest="20"
+                         Command="{Binding ChangeDbSourceCmd}" />
+        </HorizontalStackLayout>
         <HorizontalStackLayout
             Grid.Row="1"
             HorizontalOptions="CenterAndExpand"
             Spacing="10">
             <VerticalStackLayout>
-                <Label Text="Nombre:" ></Label>
-                <Entry
-                WidthRequest="200"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Text ="{Binding NewClientName}"
-                >
+                <Label Text="Nombre:"></Label>
+                <Entry WidthRequest="200"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       Text="{Binding NewClientName}">
                     <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior
-                            EventName="Completed"
-                            Command="{Binding AddClientCmd}" 
-                        />     
+                        <toolkit:EventToCommandBehavior EventName="Completed"
+                                                        Command="{Binding AddClientCmd}" />
                     </Entry.Behaviors>
                 </Entry>
             </VerticalStackLayout>
-
             <VerticalStackLayout>
                 <Label Text="Descripcion:" ></Label>
                 <Entry 
