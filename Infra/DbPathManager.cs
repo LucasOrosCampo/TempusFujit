@@ -1,21 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TempusFujit.Infra
 {
     public static class DbPathManager
     {
         const string configFileName = "database.config";
-        static string DatabaseConfigPath => Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configFileName));
+        static string AppDataRoamingTempusFujit => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TempusFujit");
+        static string DatabaseConfigPath => Path.Combine(AppDataRoamingTempusFujit, configFileName);
         static string DbConnectionString(string dbPath) => $"Data Source={dbPath};";
 
 
         public static string? GetDbConnectionString()
         {
+            Directory.CreateDirectory(AppDataRoamingTempusFujit);
             if (File.Exists(DatabaseConfigPath))
             {
                 using var reader = new StreamReader(DatabaseConfigPath);
@@ -26,6 +23,7 @@ namespace TempusFujit.Infra
         }
         public static void InitializeDbConfig(string defaultDbConnectionString)
         {
+            Directory.CreateDirectory(AppDataRoamingTempusFujit);
             if (File.Exists(DatabaseConfigPath)) return; 
             using var newStream = File.Create(DatabaseConfigPath);
             using var writer = new StreamWriter(newStream);

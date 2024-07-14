@@ -8,22 +8,24 @@
              x:Class="TempusFujit.MainPage"
              x:Name="__MainPage__"
 >
-    <Grid RowDefinitions="70,*,0.8*,0.8*,6*">
-        <HorizontalStackLayout Grid.Row="0">
+    <Grid RowDefinitions="70,*,0.8*,0.8*,6*" >
+        <FlexLayout Grid.Row="0" JustifyContent="SpaceBetween">
             <Button 
                 HorizontalOptions="Start"
-                Margin="20, 10, 0, 0"
+                Margin="10, 10, 0, 0"
                 HeightRequest="50"
                 Text="Categorias"
                 Clicked="Button_Clicked"/>
-            <ImageButton HorizontalOptions="End"
-                         Aspect="Center"
+            <ImageButton 
+                Margin="0, 20 , 10, 0"
+                HorizontalOptions="End"
+                         Aspect="AspectFit"
                          CornerRadius="8"
                          Source="db.png"
                          BackgroundColor="AliceBlue"
                          HeightRequest="20"
                          Command="{Binding ChangeDbSourceCmd}" />
-        </HorizontalStackLayout>
+        </FlexLayout>
         <HorizontalStackLayout
             Grid.Row="1"
             HorizontalOptions="CenterAndExpand"

@@ -66,6 +66,7 @@ namespace TempusFujit.ViewModels
         {
             loadTimeEntries(id);
             filterDisplayedTimes();
+            computeTotalDuration();
         }
 
         private void deleteSelected()
